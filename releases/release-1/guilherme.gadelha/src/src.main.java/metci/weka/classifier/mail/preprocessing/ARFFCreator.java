@@ -71,18 +71,13 @@ public class ARFFCreator {
 		try {
 			List<File> filesInFolder = Files.walk(Paths.get(directory)).filter(Files::isRegularFile).map(Path::toFile)
 					.collect(Collectors.toList());
-			int controller = 0;
 			for (File f : filesInFolder) {
-				if(controller > 500)
-					break;
-				
 				List<String> allLines = Files.readAllLines(f.toPath());
 				String spam = "";
 				for(String line : allLines) {
 					spam += line.replaceAll("\\P{Alnum}", " ")+" ";
 				}
 				spams.add(spam);
-				controller++;
 			}
 
 		} catch (Exception ex) {
@@ -102,18 +97,13 @@ public class ARFFCreator {
 											.filter(Files::isRegularFile)
 											.map(Path::toFile)
 											.collect(Collectors.toList());
-			int controller = 0;
 			for (File f : filesInFolder) {
-				if(controller > 500)
-					break;
-				
 				List<String> allLines = Files.readAllLines(f.toPath());
 				String ham = "";
 				for(String line : allLines) {
 					ham += line.replaceAll("\\P{Alnum}", " ")+" ";
 				}
 				hams.add(ham);
-				controller++;
 			}
 
 		} catch (Exception ex) {

@@ -40,7 +40,6 @@ import weka.filters.unsupervised.attribute.StringToWordVector;
  * @author Jose Maria Gomez Hidalgo - http://www.esp.uem.es/jmgomez
  * @author Guilherme Gadelha
  * 
- * @see MyFilteredClassifier
  */
 public class ModelCreator {
 	
