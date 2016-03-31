@@ -12,6 +12,7 @@ import java.util.Random;
 import weka.classifiers.Evaluation;
 import weka.classifiers.bayes.NaiveBayes;
 import weka.classifiers.meta.FilteredClassifier;
+import weka.classifiers.trees.J48;
 import weka.classifiers.trees.RandomTree;
 
 /**
@@ -100,6 +101,9 @@ public class ModelCreator {
 			}
 			if(this.classificationAlgo.equals("NaiveBayes")) {
 				classifier.setClassifier(new NaiveBayes());
+			}
+			if(this.classificationAlgo.equals("J48")) {
+				classifier.setClassifier(new J48());
 			}
 			
 			Evaluation eval = new Evaluation(trainData);
