@@ -109,18 +109,18 @@ public class ModelCreator {
 			Evaluation eval = new Evaluation(trainData);
 			eval.crossValidateModel(classifier, trainData, 4, new Random(1));
 			
-			System.out.println("-------------------------------------------");
+//			System.out.println("-------------------------------------------");
 			
-			System.out.println("Precision (Hams): " + eval.precision(0));
-			System.out.println("Precision (Spams): " + eval.precision(1));
+//			System.out.println("Precision (Hams): " + eval.precision(0));
+//			System.out.println("Precision (Spams): " + eval.precision(1));
+//			
+//			System.out.println("Recall (Hams): " + eval.recall(0));
+//			System.out.println("Recall (Spams): " + eval.recall(1));
+//			
+//			System.out.println("F-Measure (Hams): " + eval.fMeasure(0)); // 0 ==> ham, 1 ==> spam
+//			System.out.println("F-Measure (Spams): " + eval.fMeasure(1)); // 0 ==> ham, 1 ==> spam
 			
-			System.out.println("Recall (Hams): " + eval.recall(0));
-			System.out.println("Recall (Spams): " + eval.recall(1));
-			
-			System.out.println("F-Measure (Hams): " + eval.fMeasure(0)); // 0 ==> ham, 1 ==> spam
-			System.out.println("F-Measure (Spams): " + eval.fMeasure(1)); // 0 ==> ham, 1 ==> spam
-			
-			System.out.println("-------------------------------------------");
+//			System.out.println("-------------------------------------------");
 //			System.out.println(eval.toSummaryString());
 //			System.out.println(eval.toClassDetailsString());
 			

@@ -15,10 +15,14 @@ Verbose:
 
 ./classificador.sh -v RandomTree main/resources/data/train main/resources/data/teste
 
+./classificador.sh -v J48 main/resources/data/train main/resources/data/teste
+
 NaoVerbose:
-./classificador NaiveBayes main/resources/data/train main/resources/data/teste
+./classificador.sh NaiveBayes main/resources/data/train main/resources/data/teste
 
 ./classificador.sh RandomTree main/resources/data/train main/resources/data/teste
+
+./classificador.sh J48 main/resources/data/train main/resources/data/teste
 
 
 ==> Os dados utilizados para treinamento e teste estão na pasta 'data'

@@ -23,6 +23,7 @@ import java.io.ObjectInputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -150,11 +151,26 @@ public class Classifier {
 		}
 		return "";
 	}
-
-	public void classifyAll(String dirPath) {
+	
+	/**
+	 * Classify emails as spams or not.
+	 * 
+	 * @param hamsTestDir
+	 * @param spamsTestDir
+	 * @return list with precision, recall, fmeasure and timeOfClassification
+	 */
+	public List<Double> classifyEmails(String hamsTestDir, String spamsTestDir) {
+		double TP = 0;
+		double FP = 0;
+		double TN = 0;
+		double FN = 0;
+		
 		try {
-			List<File> filesInFolder = Files.walk(Paths.get(dirPath)).filter(Files::isRegularFile).map(Path::toFile)
+			List<File> filesInFolder = Files.walk(Paths.get(hamsTestDir)).filter(Files::isRegularFile).map(Path::toFile)
 					.collect(Collectors.toList());
+			
+			int numHams = filesInFolder.size();
+			
 			for (File f : filesInFolder) {
 				String fileName = f.getPath();
 				load(fileName);
@@ -163,13 +179,52 @@ public class Classifier {
 				if(verbose.equals("-v")) {
 					System.out.println(fileName + ": " + predValue);
 				}
+				if(predValue.equals("ham")) {
+					TN++;
+				}
+				if(predValue.equals("spam")) {
+					FP++;
+				}
 			}
+			
+			List<File> filesInFolder2 = Files.walk(Paths.get(spamsTestDir)).filter(Files::isRegularFile).map(Path::toFile)
+					.collect(Collectors.toList());
+			int numSpams = filesInFolder2.size();
+			
+			for (File f : filesInFolder2) {
+				String fileName = f.getPath();
+				load(fileName);
+				makeInstance();
+				String predValue = classify();
+				if(verbose.equals("-v")) {
+					System.out.println(fileName + ": " + predValue);
+				}
+				if(predValue.equals("spam")) {
+					TP++;
+				}
+				if(predValue.equals("ham")) {
+					FN++;
+				}
+			}
+			
+			assert TP+FP+TN+FN == numHams+numSpams;
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		double precision = TP/(TP+FP);
+		double recall = TP/(TP+FN);
+		double fmeasure = 2*precision*recall/(precision+recall);
+		
+		List<Double> list = new ArrayList<Double>();
+		list.add(precision);
+		list.add(recall);
+		list.add(fmeasure);
+		
+		return list;
 	}
-
+	
 //	/**
 //	 * Main method. It is an example of the usage of this class.
 //	 * 

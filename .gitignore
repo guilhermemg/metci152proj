@@ -2,4 +2,6 @@
 bin/
 target/
 .project
+main/resources/data
+Datasets
 
