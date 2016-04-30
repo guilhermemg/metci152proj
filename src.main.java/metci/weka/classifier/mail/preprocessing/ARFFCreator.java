@@ -7,8 +7,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 public class ARFFCreator {
@@ -80,9 +82,19 @@ public class ARFFCreator {
 			System.out.println("max_i_int: " + max_i_int);
 			
 			System.out.println("#total spams files = " + filesInFolder.size());
+			int counter = 0;
+			List<Integer> selected_is = new ArrayList<Integer>();
 			
-			for (int i = 0; i < max_i_int; i++) {
-				File f = filesInFolder.get(i);
+			while(counter < max_i_int) {
+				Random rand = new Random();
+				int rnd = rand.nextInt(max_i_int) + 1;
+				while(selected_is.contains(rnd)) {
+					rnd = rand.nextInt(max_i_int) + 1;
+				}
+				selected_is.add(rnd);
+				counter++;
+				
+				File f = filesInFolder.get(rnd);
 				List<String> allLines = Files.readAllLines(f.toPath());
 				
 				if(minNumLines == 10 && allLines.size() >= 10) {
@@ -101,6 +113,7 @@ public class ARFFCreator {
 				}
 			}
 			System.out.println("#spams files in the end: " + spams.size());
+			System.out.println("Selected is (spams): " + selected_is);
 
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -127,9 +140,19 @@ public class ARFFCreator {
 			System.out.println("max_i_int: " + max_i_int);
 			
 			System.out.println("#total hams files = " + filesInFolder.size());
+			int counter = 0;
+			List<Integer> selected_is = new ArrayList<Integer>();
 			
-			for (int i = 0; i < max_i_int; i++) {
-				File f = filesInFolder.get(i);
+			while(counter < max_i_int) {
+				Random rand = new Random();
+				int rnd = rand.nextInt(max_i_int) + 1;
+				while(selected_is.contains(rnd)) {
+					rnd = rand.nextInt(max_i_int) + 1;
+				}
+				selected_is.add(rnd);
+				counter++;
+				
+				File f = filesInFolder.get(rnd);
 				List<String> allLines = Files.readAllLines(f.toPath());
 				
 				if(minNumLines == 10 && allLines.size() >= 10) {
@@ -149,7 +172,8 @@ public class ARFFCreator {
 			}
 			
 			System.out.println("#hams files in the end: " + hams.size());
-
+			System.out.println("Selected is (hams): " + selected_is);
+			
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
