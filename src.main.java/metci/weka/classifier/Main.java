@@ -73,7 +73,8 @@ public class Main {
 			String modelCreatedPath = ModelCreator.MODEL_CREATED_PATH;
 			
 			modelCreator.loadDataset(dataset);
-			modelCreator.evaluate();
+			List<Double> result = modelCreator.evaluate();
+			System.out.println("Result1: " + result.toString());
 			modelCreator.learn();
 			modelCreator.saveModel(modelCreatedPath);
 			
@@ -93,8 +94,8 @@ public class Main {
 			long before = date.getTime();
 			
 			// result: {precision, recall, fmeasure, time}
-			List<Double> result = classifier.classifyEmails(hamsTestDir, spamsTestDir);
-			System.out.println("Result: " + result.toString());
+			List<Double> result2 = classifier.classifyEmails(hamsTestDir, spamsTestDir);
+			System.out.println("Result2: " + result2.toString());
 			
 			Date date2 = new Date();
 			long after = date2.getTime();
@@ -103,13 +104,19 @@ public class Main {
 			System.out.println("processing time: " + processingTimeInMiliseconds + " ms");
 			
 			// write results as one string line to report.csv
+			boolean flag = false;
 			File reportFile = new File(reportFilePath);
 			if (!reportFile.exists()) {
 				reportFile.createNewFile();
+				flag = true;
 			}
 			
-			String resultingString = classificationAlgo + "," + emailSize + "," + trainPercent + "," + result.get(0) + "," + result.get(1) + "," + result.get(2) + "," + processingTimeInMiliseconds + "\n";
 			FileWriter reportFileWriter = new FileWriter(reportFilePath, true);
+			if(flag) {
+				reportFileWriter.write("Algoritmo,TME,PD,precision,recall,fmeasure,time\n");
+			}
+
+			String resultingString = classificationAlgo + "," + emailSize + "," + trainPercent + "," + result.get(0) + "," + result.get(1) + "," + result.get(2) + "," + processingTimeInMiliseconds + "\n";
 			reportFileWriter.write(resultingString);
 			reportFileWriter.close();
 		}

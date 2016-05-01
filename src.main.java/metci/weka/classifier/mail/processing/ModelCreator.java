@@ -7,6 +7,8 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import weka.classifiers.Evaluation;
@@ -88,7 +90,8 @@ public class ModelCreator {
 	 * the classifier is defined but not trained yet. Evaluation of previously
 	 * trained classifiers can lead to unexpected results.
 	 */
-	public void evaluate() {
+	public List<Double> evaluate() {
+		List<Double> result = new ArrayList<Double>();
 		try {
 			trainData.setClassIndex(0);
 			filter = new StringToWordVector();
@@ -109,26 +112,33 @@ public class ModelCreator {
 			Evaluation eval = new Evaluation(trainData);
 			eval.crossValidateModel(classifier, trainData, 4, new Random(1));
 			
-//			System.out.println("-------------------------------------------");
+			System.out.println("-------------------------------------------");
+			double precision = eval.precision(1);
+			double recall = eval.recall(1);
+			double fMeasure = eval.fMeasure(1);
+			result.add(precision);
+			result.add(recall);
+			result.add(fMeasure);
 			
-//			System.out.println("Precision (Hams): " + eval.precision(0));
-//			System.out.println("Precision (Spams): " + eval.precision(1));
-//			
-//			System.out.println("Recall (Hams): " + eval.recall(0));
-//			System.out.println("Recall (Spams): " + eval.recall(1));
-//			
-//			System.out.println("F-Measure (Hams): " + eval.fMeasure(0)); // 0 ==> ham, 1 ==> spam
-//			System.out.println("F-Measure (Spams): " + eval.fMeasure(1)); // 0 ==> ham, 1 ==> spam
+			System.out.println("Precision (Hams): " + eval.precision(0));
+			System.out.println("Precision (Spams): " + precision);
 			
-//			System.out.println("-------------------------------------------");
-//			System.out.println(eval.toSummaryString());
-//			System.out.println(eval.toClassDetailsString());
+			System.out.println("Recall (Hams): " + eval.recall(0));
+			System.out.println("Recall (Spams): " + recall);
 			
-//			System.out.println("===== Evaluating on filtered (training) dataset done =====");
+			System.out.println("F-Measure (Hams): " + eval.fMeasure(0)); // 0 ==> ham, 1 ==> spam
+			System.out.println("F-Measure (Spams): " + fMeasure); // 0 ==> ham, 1 ==> spam
+			
+			System.out.println("-------------------------------------------");
+			System.out.println(eval.toSummaryString());
+			System.out.println(eval.toClassDetailsString());
+			
+			System.out.println("===== Evaluating on filtered (training) dataset done =====");
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+		return result;
 	}
 	
 	/**
